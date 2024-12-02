@@ -13,5 +13,5 @@ $dbPassword = "";
 $conn = mysqli_connect($servername, $dbUsername, $dbPassword, $dbname);
 
 
-
 ?>
+<H1>hi</H1>
