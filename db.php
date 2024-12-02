@@ -2,7 +2,7 @@
 
 $servername = "localhost:8889";
 
-$dbname = "practice";
+$dbname = "系學會";
 
 $dbUsername = "root";
 
