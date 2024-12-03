@@ -51,7 +51,7 @@
       </li>
       <li class="nav-item">
 
-        <a class="nav-link" href="成員活躍度追蹤.php">edit_profile</a>
+        <a class="nav-link" href="成員活躍度追蹤.php">成員活躍度追蹤</a>
 
       </li>
       <li class="nav-item">
