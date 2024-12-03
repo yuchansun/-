@@ -77,17 +77,19 @@ if ($order){
 <br>
 <a href="insert.php" class="btn btn-primary position-fixed bottom-0 end-0">+</a>
 
-<form action="query.php" method="post">
+<form action="成員活躍度追蹤.php" method="post">
 
   <select name="order" class="form-select" aria-label="選擇排序欄位">
 
     <option value="" <?=($order=='')?'selected':''?>>選擇排序欄位</option>
 
-    <option value="company" <?=($order=="company")?"selected":""?>>求才廠商</option>
+    <option value="company" <?=($order=="stu_id")?"selected":""?>>學號</option>
 
-    <option value="content" <?=($order=="content")?"selected":""?>>求才內容</option>
+    <option value="content" <?=($order=="name")?"selected":""?>>姓名</option>
 
-    <option value="pdate" <?=($order=="pdate")?"selected":""?>>刊登日期</option>
+    <option value="content" <?=($order=="position")?"selected":""?>>擔任幹部</option>
+
+    <option value="pdate" <?=($order=="activities")?"selected":""?>>活動</option>
 
   </select>
 
