@@ -1,6 +1,6 @@
 <?php
 
-$servername = "localhost";
+$servername = "localhost:8999";
 
 $dbname = "系學會";
 
