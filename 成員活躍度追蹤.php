@@ -37,10 +37,10 @@ try {
  $start_date = $_POST["start_date"]??"";
  $end_date = $_POST["end_date"]??"";
 
-if ($searchtxt){
-  $condition = $searchtxt ? "where (company like '%$searchtxt%' or content like '%$searchtxt%') ":"";
-  $sql="select * from member $condition";
-} 
+// if ($searchtxt){
+//   $condition = $searchtxt ? "where (name like '%$searchtxt%' or activities like '%$searchtxt%') ":"";
+//   $sql="select * from member $condition";
+// } 
 
 if ($start_date){
   if ($condition){$condition.=" and pdate >= '$start_date'";}
