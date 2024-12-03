@@ -10,8 +10,6 @@ exit();
 }
 try {
   require_once 'db.php';
-  // $sql="select * from job";
-  // $result = mysqli_query($conn, $sql);
 ?>
 
 
@@ -24,7 +22,6 @@ try {
  if ($order){
   $sql.=" order by $order";
 }
-// $result = mysqli_query($conn, $sql);
 
 
 //  $searchtxt = $_POST["searchtxt"] ?? ""
@@ -41,7 +38,6 @@ try {
  $end_date = $_POST["end_date"]??"";
 
 if ($searchtxt){
-  // $sql="select * from job where company = '$searchtxt'";
   $condition = $searchtxt ? "where (company like '%$searchtxt%' or content like '%$searchtxt%') ":"";
   $sql="select * from member $condition";
 } 
@@ -54,7 +50,7 @@ if ($start_date){
   if ($end_date){
     $condition .=" and pdate <= '$end_date' ";
   }
-  $sql="select * from job $condition";
+  $sql="select * from member $condition";
 }
 else {
 
@@ -62,13 +58,13 @@ if ($end_date){
   if ($condition){$condition.=" and pdate >= '$end_date'";}
   else{
   $condition .=" where pdate <= '$end_date'";}
-  $sql="select * from job $condition";
+  $sql="select * from members $condition";
 }
 }
 if ($order){
   $sql.=" order by $order";
 }
-// echo $sql;
+
   $result = mysqli_query($conn, $sql);
 
  ?>
@@ -180,7 +176,6 @@ if ($order){
 
 }
 
-//catch exception
 
 catch(Exception $e) {
 
