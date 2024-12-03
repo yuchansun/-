@@ -166,7 +166,7 @@ if ($order){
 
   <td><?=$row["position"]?></td>
 
-  <td><?=$row["admission"]?></td>
+  <td><?=$row["activities"]?></td>
 
 
 
