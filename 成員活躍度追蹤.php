@@ -156,7 +156,7 @@ if ($order){
 
   <td><?=$row["activities"]?></td>
 
-  <td><a href="成員活躍度追蹤delete.php?postid=<?=$row["postid"]?>" class="btn btn-primary">刪除</a>
+  <!-- <td><a href="成員活躍度追蹤delete.php?postid=<?=$row["postid"]?>" class="btn btn-primary">刪除</a> -->
 
  </tr>
 
