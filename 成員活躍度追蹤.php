@@ -8,20 +8,19 @@ if (!isset($_SESSION["account"])){
    header("Location:login.php");
 exit();
 }
-
 try {
   require_once 'db.php';
+  // $sql="select * from job";
   // $result = mysqli_query($conn, $sql);
-
-//檢查使用者角色
-//$is_admin = ($_SESSION['role'] === 'M');
+?>
 
 
- 
+<?php 
+
 
 //  $order 
  $order = $_POST["order"]??"";
- $sql="select * from member";
+ $sql="select * from job";
  if ($order){
   $sql.=" order by $order";
 }
@@ -31,9 +30,9 @@ try {
 //  $searchtxt = $_POST["searchtxt"] ?? ""
  $searchtxt = $_POST["searchtxt"]??"";
  $searchtxt = mysqli_real_escape_string($conn, $searchtxt); //使用mysqli_real_escape_string()來避免語法錯誤
- $sql="select * from member where name = '$searchtxt'";
- $condition = $searchtxt ? "where name like '%$searchtxt%' or content like '%$searchtxt%'":"";
- $sql="select * from member $condition";
+ $sql="select * from job where company = '$searchtxt'";
+ $condition = $searchtxt ? "where company like '%$searchtxt%' or content like '%$searchtxt%'":"";
+ $sql="select * from job $condition";
  
 //  $result = mysqli_query($conn, $sql);
  
@@ -46,43 +45,37 @@ try {
 
 
 if ($searchtxt){
-  // $sql="select * from job where name = '$searchtxt'";
-  $condition = $searchtxt ? "where (name like '%$searchtxt%' or content like '%$searchtxt%') ":"";
-  $sql="select * from member $condition";
+  // $sql="select * from job where company = '$searchtxt'";
+  $condition = $searchtxt ? "where (company like '%$searchtxt%' or content like '%$searchtxt%') ":"";
+  $sql="select * from job $condition";
 } 
 
-// if ($start_date){
-//   if ($condition){$condition.=" and pdate >= '$start_date'";}
-//   else{
-//   $condition .=" where pdate >= '$start_date'";
-//   }
-//   if ($end_date){
-//     $condition .=" and pdate <= '$end_date' ";
-//   }
-//   $sql="select * from job $condition";
-// }
-// else {
+if ($start_date){
+  if ($condition){$condition.=" and pdate >= '$start_date'";}
+  else{
+  $condition .=" where pdate >= '$start_date'";
+  }
+  if ($end_date){
+    $condition .=" and pdate <= '$end_date' ";
+  }
+  $sql="select * from job $condition";
+}
+else {
 
-// if ($end_date){
-//   if ($condition){$condition.=" and pdate >= '$end_date'";}
-//   else{
-//   $condition .=" where pdate <= '$end_date'";}
-//   $sql="select * from job $condition";
-// }
-// }
-
+if ($end_date){
+  if ($condition){$condition.=" and pdate >= '$end_date'";}
+  else{
+  $condition .=" where pdate <= '$end_date'";}
+  $sql="select * from job $condition";
+}
+}
 if ($order){
   $sql.=" order by $order";
 }
+// echo $sql;
   $result = mysqli_query($conn, $sql);
-}catch (Exception $e) {
-  echo 'Error: ' . $e->getMessage();
-  exit();
-}
 
  ?>
-
-
 
 <!-- 選擇排序欄位 -->
 <br>
@@ -142,53 +135,56 @@ if ($order){
 <table class="table table-bordered table-striped">
 
  <tr>
- <td>學號</td>
 
-  <td>姓名</td>
+  <td>求才廠商</td>
 
-  <td>幹部紀錄</td>
+  <td>求才內容</td>
 
-  <td>活動</td>
+  <td>日期</td>
 
  </tr>
 
  <?php
 
- while($row = mysqli_fetch_assoc($result)) {
-
-  ?>
+ while($row = mysqli_fetch_assoc($result)) {?>
 
  <tr>
 
-  <td><?=$row["stu_id"]?></td>
+  <td><?=$row["company"]?></td>
 
-  <td><?=$row["name"]?></td>
+  <td><?=$row["content"]?></td>
 
-  <td><?=$row["position"]?></td>
+  <td><?=$row["pdate"]?></td>
+  <td><a href="delete.php?postid=<?=$row["postid"]?>" class="btn btn-primary">刪除</a>
 
-  <td><?=$row["activities"]?></td>
+ </tr>
 
+ <?php
 
+  }
 
-<td>
-  <?php if ($_SESSION["role"] === 'M'): ?>
-    <a href="update.php?postid=<?=$row["postid"]?>" class="btn btn-primary">修改</a>
-    <a href="delete.php?postid=<?=$row["postid"]?>" class="btn btn-danger">刪除</a>
-  <?php else: ?>
-    無權限
-  <?php endif; ?>
-</td>
+ ?>
 
-
-
-</tr>  
 </table>
+
 </div>
 
 <?php
-}
-?>
 
-<?php
+  $conn = null; 
+
+  
+
+}
+
+//catch exception
+
+catch(Exception $e) {
+
+  echo 'Message: ' .$e->getMessage();
+
+}
+
 require_once "footer.php";
+
 ?>
