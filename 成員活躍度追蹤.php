@@ -146,9 +146,9 @@ if ($order){
 
   <td>姓名</td>
 
-  <td>電話</td>
+  <td>幹部紀錄</td>
 
-  <td>入學日期</td>
+  <td>活動</td>
 
  </tr>
 
@@ -164,7 +164,7 @@ if ($order){
 
   <td><?=$row["name"]?></td>
 
-  <td><?=$row["contact"]?></td>
+  <td><?=$row["position"]?></td>
 
   <td><?=$row["admission"]?></td>
 
