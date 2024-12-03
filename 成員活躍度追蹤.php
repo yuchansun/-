@@ -89,7 +89,7 @@ if ($order){
 
   </select>
 
-  <input placeholder="搜尋廠商及內容" class="form-control" type="text" name="searchtxt" value="<?=$searchtxt?>">
+  <input placeholder="搜尋姓名及活動" class="form-control" type="text" name="searchtxt" value="<?=$searchtxt?>">
 
   <div class="row g-3 align-items-center">
 
