@@ -4,13 +4,13 @@ require_once "header.php";
 
 try {
 
-  $postid = "";
+  $stu_id = "";
 
-  $company = "";
+  $name = "";
 
-  $content = "";
+  $position = "";
 
-  $pdate = "";
+  $activities = "";
 
 
 
@@ -24,9 +24,9 @@ try {
 
       //delete data
 
-      $postid = $_GET["postid"];
+      $stu_id = $_GET["stu_id"];
 
-      $sql="delete from job where postid=?";
+      $sql="delete from member where stu_id=?";
 
       $stmt = mysqli_stmt_init($conn);
 
@@ -38,7 +38,7 @@ try {
 
       mysqli_close($conn);
 
-      header('location:query.php');
+      header('location:成員活躍度追蹤.php');
 
     }
 
@@ -46,9 +46,9 @@ try {
 
       //show data
 
-      $postid = $_GET["postid"];
+      $stu_id = $_GET["stu_id"];
 
-      $sql="select postid, company, content, pdate from job where postid=?";    
+      $sql="select stu_id, name, position, activities from member where stu_id=?";    
 
       // $result = mysqli_query($conn, $sql);
 
@@ -56,13 +56,13 @@ try {
 
       mysqli_stmt_prepare($stmt, $sql);
 
-      mysqli_stmt_bind_param($stmt, "i", $postid);
+      mysqli_stmt_bind_param($stmt, "i", $stu_id);
 
       $res = mysqli_stmt_execute($stmt);
 
       if ($res){
 
-        mysqli_stmt_bind_result($stmt, $postid, $company, $content, $pdate);
+        mysqli_stmt_bind_result($stmt, $stu_id, $name, $position, $activities);
 
         mysqli_stmt_fetch($stmt);
 
