@@ -21,7 +21,7 @@ try {
 
 //  $order 
  $order = $_POST["order"]??"";
- $sql="select * from job";
+ $sql="select * from member";
  if ($order){
   $sql.=" order by $order";
 }
@@ -31,9 +31,9 @@ try {
 //  $searchtxt = $_POST["searchtxt"] ?? ""
  $searchtxt = $_POST["searchtxt"]??"";
  $searchtxt = mysqli_real_escape_string($conn, $searchtxt); //使用mysqli_real_escape_string()來避免語法錯誤
- $sql="select * from job where company = '$searchtxt'";
- $condition = $searchtxt ? "where company like '%$searchtxt%' or content like '%$searchtxt%'":"";
- $sql="select * from job $condition";
+ $sql="select * from member where name = '$searchtxt'";
+ $condition = $searchtxt ? "where name like '%$searchtxt%' or content like '%$searchtxt%'":"";
+ $sql="select * from member $condition";
  
 //  $result = mysqli_query($conn, $sql);
  
@@ -46,30 +46,31 @@ try {
 
 
 if ($searchtxt){
-  // $sql="select * from job where company = '$searchtxt'";
-  $condition = $searchtxt ? "where (company like '%$searchtxt%' or content like '%$searchtxt%') ":"";
-  $sql="select * from job $condition";
+  // $sql="select * from job where name = '$searchtxt'";
+  $condition = $searchtxt ? "where (name like '%$searchtxt%' or content like '%$searchtxt%') ":"";
+  $sql="select * from member $condition";
 } 
 
-if ($start_date){
-  if ($condition){$condition.=" and pdate >= '$start_date'";}
-  else{
-  $condition .=" where pdate >= '$start_date'";
-  }
-  if ($end_date){
-    $condition .=" and pdate <= '$end_date' ";
-  }
-  $sql="select * from job $condition";
-}
-else {
+// if ($start_date){
+//   if ($condition){$condition.=" and pdate >= '$start_date'";}
+//   else{
+//   $condition .=" where pdate >= '$start_date'";
+//   }
+//   if ($end_date){
+//     $condition .=" and pdate <= '$end_date' ";
+//   }
+//   $sql="select * from job $condition";
+// }
+// else {
 
-if ($end_date){
-  if ($condition){$condition.=" and pdate >= '$end_date'";}
-  else{
-  $condition .=" where pdate <= '$end_date'";}
-  $sql="select * from job $condition";
-}
-}
+// if ($end_date){
+//   if ($condition){$condition.=" and pdate >= '$end_date'";}
+//   else{
+//   $condition .=" where pdate <= '$end_date'";}
+//   $sql="select * from job $condition";
+// }
+// }
+
 if ($order){
   $sql.=" order by $order";
 }
