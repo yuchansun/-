@@ -142,13 +142,13 @@ if ($order){
 <table class="table table-bordered table-striped">
 
  <tr>
- <td>編號</td>
+ <td>學號</td>
 
-  <td>求才廠商</td>
+  <td>姓名</td>
 
-  <td>求才內容</td>
+  <td>電話</td>
 
-  <td>日期</td>
+  <td>入學日期</td>
 
  </tr>
 
