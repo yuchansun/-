@@ -20,7 +20,7 @@ try {
 
 //  $order 
  $order = $_POST["order"]??"";
- $sql="select * from job";
+ $sql="select * from member";
  if ($order){
   $sql.=" order by $order";
 }
@@ -30,9 +30,9 @@ try {
 //  $searchtxt = $_POST["searchtxt"] ?? ""
  $searchtxt = $_POST["searchtxt"]??"";
  $searchtxt = mysqli_real_escape_string($conn, $searchtxt); //使用mysqli_real_escape_string()來避免語法錯誤
- $sql="select * from job where company = '$searchtxt'";
- $condition = $searchtxt ? "where company like '%$searchtxt%' or content like '%$searchtxt%'":"";
- $sql="select * from job $condition";
+ $sql="select * from member where name = '$searchtxt'";
+ $condition = $searchtxt ? "where name like '%$searchtxt%' or activities like '%$searchtxt%'":"";
+ $sql="select * from member $condition";
  
 //  $result = mysqli_query($conn, $sql);
  
@@ -40,14 +40,10 @@ try {
  $start_date = $_POST["start_date"]??"";
  $end_date = $_POST["end_date"]??"";
 
- 
-
-
-
 if ($searchtxt){
   // $sql="select * from job where company = '$searchtxt'";
   $condition = $searchtxt ? "where (company like '%$searchtxt%' or content like '%$searchtxt%') ":"";
-  $sql="select * from job $condition";
+  $sql="select * from member $condition";
 } 
 
 if ($start_date){
@@ -136,11 +132,13 @@ if ($order){
 
  <tr>
 
-  <td>求才廠商</td>
+  <td>學號</td>
 
-  <td>求才內容</td>
+  <td>姓名</td>
 
-  <td>日期</td>
+  <td>擔任幹部</td>
+
+  <td>活動</td>
 
  </tr>
 
@@ -150,11 +148,14 @@ if ($order){
 
  <tr>
 
-  <td><?=$row["company"]?></td>
+  <td><?=$row["stu_id"]?></td>
 
-  <td><?=$row["content"]?></td>
+  <td><?=$row["name"]?></td>
 
-  <td><?=$row["pdate"]?></td>
+  <td><?=$row["position"]?></td>
+
+  <td><?=$row["activities"]?></td>
+
   <td><a href="delete.php?postid=<?=$row["postid"]?>" class="btn btn-primary">刪除</a>
 
  </tr>
