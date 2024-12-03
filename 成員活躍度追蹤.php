@@ -160,13 +160,13 @@ if ($order){
 
  <tr>
 
-  <td><?=$row["postid"]?></td>
+  <td><?=$row["stu_id"]?></td>
 
-  <td><?=$row["company"]?></td>
+  <td><?=$row["name"]?></td>
 
-  <td><?=$row["content"]?></td>
+  <td><?=$row["contact"]?></td>
 
-  <td><?=$row["pdate"]?></td>
+  <td><?=$row["admission"]?></td>
 
 
 
