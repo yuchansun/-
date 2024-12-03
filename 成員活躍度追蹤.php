@@ -83,13 +83,13 @@ if ($order){
 
     <option value="" <?=($order=='')?'selected':''?>>選擇排序欄位</option>
 
-    <option value="company" <?=($order=="stu_id")?"selected":""?>>學號</option>
+    <option value="stu_id" <?=($order=="stu_id")?"selected":""?>>學號</option>
 
-    <option value="content" <?=($order=="name")?"selected":""?>>姓名</option>
+    <option value="name" <?=($order=="name")?"selected":""?>>姓名</option>
 
-    <option value="content" <?=($order=="position")?"selected":""?>>擔任幹部</option>
+    <option value="position" <?=($order=="position")?"selected":""?>>擔任幹部</option>
 
-    <option value="pdate" <?=($order=="activities")?"selected":""?>>活動</option>
+    <option value="activities" <?=($order=="activities")?"selected":""?>>活動</option>
 
   </select>
 
