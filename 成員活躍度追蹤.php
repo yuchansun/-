@@ -19,36 +19,31 @@ try {
  $searchtxt = mysqli_real_escape_string($conn, $searchtxt); //使用mysqli_real_escape_string()來避免語法錯誤
 
 //  $date
-$start_date = $_POST["start_date"]??"";
-$end_date = $_POST["end_date"]??"";
+ $start_date = $_POST["start_date"]??"";
+ $end_date = $_POST["end_date"]??"";
 
-// $sql="select * from member";
-//  $condition = "";
 
 
 // 基本 SQL 查詢
 $sql = "SELECT 
-m.stu_id,
-m.name,
-GROUP_CONCAT(DISTINCT p.position_name) AS positions,
-GROUP_CONCAT(DISTINCT a.activity_name ORDER BY a.activity_id) AS activities,
-COUNT(DISTINCT ap.activity_id) AS participated_activities,  -- 計算學員參加的活動次數
-(SELECT COUNT(*) FROM activities) AS total_activities        -- 計算總活動數
-FROM 
-member m
-LEFT JOIN 
-positions p ON m.stu_id = p.stu_id
-LEFT JOIN 
-activity_participants ap ON m.stu_id = ap.stu_id
-LEFT JOIN 
-activities a ON ap.activity_id = a.activity_id
-GROUP BY 
-            m.stu_id, m.name";
+ m.stu_id,
+ m.name,
+ GROUP_CONCAT(DISTINCT p.position_name) AS positions,
+ GROUP_CONCAT(DISTINCT a.activity_name ORDER BY a.activity_id) AS activities,
+ COUNT(DISTINCT ap.activity_id) AS participated_activities,  -- 計算學員參加的活動次數
+ (SELECT COUNT(*) FROM activities) AS total_activities        -- 計算總活動數
+ FROM 
+ member m
+ LEFT JOIN 
+ positions p ON m.stu_id = p.stu_id
+ LEFT JOIN 
+ activity_participants ap ON m.stu_id = ap.stu_id
+ LEFT JOIN 
+ activities a ON ap.activity_id = a.activity_id
+ GROUP BY 
+ m.stu_id, m.name";
 
-//  $sql="select * from member where name = '$searchtxt'";
-//  $condition = $searchtxt ? "where name like '%$searchtxt%' or activities like '%$searchtxt%'":"";
-//  $sql="select * from member $condition";
- 
+
 if ($searchtxt) {
     $sql .= " HAVING m.name LIKE '%$searchtxt%' OR activities LIKE '%$searchtxt%'";
 }
@@ -75,22 +70,14 @@ if ($end_date){
 if ($order){
   $sql.=" order by $order";
 }
-// if ($order){
-//     $sql.=" order by $order";
-//   }
-  
-  $result = mysqli_query($conn, $sql);
+ $result = mysqli_query($conn, $sql);
 
-// // 組合SQL並執行查詢
-// $sql = "SELECT * FROM member $condition";
-// $result = mysqli_query($conn, $sql);
-// ?>
+?>
 
-
+<div class="container">
 <!-- 選擇排序欄位 -->
-<br>
-<a href="insert.php" class="btn btn-primary position-fixed bottom-0 end-0">+</a>
-
+ <br>
+ 
 <form action="成員活躍度追蹤.php" method="post">
 
   <select name="order" class="form-select" aria-label="選擇排序欄位">
@@ -112,16 +99,17 @@ if ($order){
   <input placeholder="搜尋姓名及活動" class="form-control" type="text" name="searchtxt" value="<?=$searchtxt?>">
 
   <div class="row g-3 align-items-center">
-<br>
+  <br>
   </div>
-
-  <input class="btn btn-primary" type="submit" value="搜尋">
+  <input class="btn btn-secondary" type="submit" value="搜尋">
 
 </form>
 
 
 <div class="container">
 
+
+<!-- 資料表格 -->
 <table class="table table-bordered table-striped">
 
  <tr>
@@ -163,7 +151,7 @@ if ($order){
           $participated_activities = $row['participated_activities'];
           $total_activities = $row['total_activities'];
           $activity_rate = $total_activities > 0 ? ($participated_activities / $total_activities) * 100 : 0;
-?>
+  ?>
   <td><?=$activity_rate?>%</td> <!-- 顯示活躍度百分比 -->
 
   <td>
@@ -171,12 +159,12 @@ if ($order){
   <button type="button" class="btn btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#editPositionModal<?=$row['stu_id']?>">編輯幹部</button>
   
     <!-- 編輯活動連結 --><!-- <a href="edit_activity.php?stu_id=<?=$row['stu_id']?>" class="btn btn-info">編輯活動</a> -->
- <!-- 編輯活動按鈕，觸發 Modal -->
+  <!-- 編輯活動按鈕，觸發 Modal -->
  <button type="button" class="btn btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#editActivityModal<?=$row['stu_id']?>">編輯活動</button>
 
 
  <!-- 編輯幹部 Modal -->
-<div class="modal fade" id="editPositionModal<?=$row['stu_id']?>" tabindex="-1" aria-labelledby="editPositionModalLabel" aria-hidden="true">
+ <div class="modal fade" id="editPositionModal<?=$row['stu_id']?>" tabindex="-1" aria-labelledby="editPositionModalLabel" aria-hidden="true">
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
@@ -195,11 +183,11 @@ if ($order){
       </div>
     </div>
   </div>
-</div>
+ </div>
 
 
-<!-- Modal -->
-<div class="modal fade" id="editActivityModal<?=$row['stu_id']?>" tabindex="-1" aria-labelledby="editActivityModalLabel" aria-hidden="true">
+ <!-- Modal -->
+ <div class="modal fade" id="editActivityModal<?=$row['stu_id']?>" tabindex="-1" aria-labelledby="editActivityModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
@@ -236,23 +224,26 @@ if ($order){
             </div>
         </div>
     </div>
-</div>
-</td>
+ </div>
+ </td>
 
  <?php
-
   }
-
  ?>
 
 </table>
 
 
- <!-- 新增活動按鈕 -->
- <!-- <a href="add_activity.php" class="btn btn-primary position-fixed bottom-0 end-0 m-3">新增活動</a> -->
- <!-- 管理幹部按鈕 -->
- <!-- <a href="manage_positions.php" class="btn btn-secondary position-fixed bottom-0 end-0 m-3" style="bottom: 80px;">管理幹部</a> -->
+<!--  -->
+ 
 
+
+
+
+
+
+
+</div>
 </div>
 
 <?php
@@ -265,11 +256,12 @@ if ($order){
 
 
 catch(Exception $e) {
-
   echo 'Message: ' .$e->getMessage();
-
 }
-
 require_once "footer.php";
-
 ?>
+
+
+
+
+<!-- <a href="insert.php" class="btn btn-primary position-fixed bottom-0 end-0" align="center">+</a> -->
