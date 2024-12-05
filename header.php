@@ -20,8 +20,7 @@
 
 <body>
 
-<nav class="navbar navbar-expand-sm bg-primary navbar-dark">
-
+<nav class="navbar navbar-expand-sm bg-dark navbar-dark">
 
 
   <div class="container-fluid">
