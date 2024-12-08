@@ -1,3 +1,19 @@
+<head>
+    <!-- 引入 Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+
+<body>
+    <!-- 內容區域 -->
+
+    <!-- 引入 jQuery -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+    <!-- 引入 Bootstrap JavaScript 和 Popper.js -->
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.min.js"></script>
+</body>
+
 <?php
 
 require_once "header.php";
@@ -176,7 +192,7 @@ if ($order){
           <input type="hidden" name="stu_id" value="<?=$row['stu_id']?>">
           
           <label for="positions">幹部職位</label>
-          <input type="text" name="positions" class="form-control" value="<?=$row['positions']?>" required>
+          <input type="text" name="positions" class="form-control" value="<?=$row['positions']?>" >
 
           <button type="submit" class="btn btn-primary mt-3">更新幹部職位</button>
         </form>
@@ -184,9 +200,10 @@ if ($order){
     </div>
   </div>
  </div>
+ 
 
 
- <!-- Modal -->
+ <!-- 編輯活動Modal -->
  <div class="modal fade" id="editActivityModal<?=$row['stu_id']?>" tabindex="-1" aria-labelledby="editActivityModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
@@ -237,13 +254,63 @@ if ($order){
 <!--  -->
  
 
-
-
-
-
-
-
 </div>
+
+<!-- 新增活動按鈕 -->
+<button type="button" class="btn btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#addActivityModal">新增活動</button>
+
+<!-- 新增活動 Modal -->
+<div class="modal fade" id="addActivityModal" tabindex="-1" aria-labelledby="addActivityModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="addActivityModalLabel">新增活動</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <form action="add_activity.php" method="POST">
+          <!-- 活動名稱 -->
+          <div class="form-group">
+            <label for="activity_name">活動名稱</label>
+            <input type="text" class="form-control" id="activity_name" name="activity_name" required>
+          </div>
+
+          <!-- 活動日期 -->
+          <div class="form-group mt-3">
+            <label for="activity_date">活動日期</label>
+            <input type="date" class="form-control" id="activity_date" name="activity_date" required>
+          </div>
+
+          <!-- 選擇學生參加 -->
+          <div class="form-group mt-3">
+            <label for="students">選擇學生參加活動</label><br>
+            <div style="max-height: 200px; overflow-y: auto;">
+              <?php
+                // 查詢所有學生
+                $sql = "SELECT stu_id, name FROM member";
+                $result = mysqli_query($conn, $sql);
+                
+                while ($row = mysqli_fetch_assoc($result)) {
+                    echo "<div class='form-check'>
+                            <input type='checkbox' class='form-check-input' name='students[]' value='{$row['stu_id']}'>
+                            <label class='form-check-label'>{$row['stu_id']} - {$row['name']}</label>
+                          </div>";
+                }
+              ?>
+            </div>
+          </div>
+
+          <!-- 提交按鈕 -->
+          <button type="submit" class="btn btn-primary mt-3">新增活動</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+<!--  -->
 </div>
 
 <?php
