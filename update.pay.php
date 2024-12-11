@@ -14,16 +14,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $admission = $_POST['admission']; // 繳費日期
 
     // 驗證資料是否完整
-    if (empty($id) || ($payment_status != '已繳費' && $payment_status != '未繳費') || empty($admission)) {
+    if (empty($id) || ($payment_status != '已繳費' && $payment_status != '未繳費') ) {
         echo json_encode(['success' => false, 'message' => '資料不完整或格式不正確']);
         exit();
     }
 
     // 驗證日期格式
     $date_regex = '/^\d{4}-\d{2}-\d{2}$/';
-    if (!preg_match($date_regex, $admission)) {
+    if (!preg_match($date_regex, $admission) && !empty($admission)) {
         echo json_encode(['success' => false, 'message' => '日期格式錯誤']);
         exit();
+    } else if (empty($admission)){
+      $admission = null;
     }
 
     // 更新資料庫

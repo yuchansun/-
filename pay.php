@@ -202,6 +202,35 @@ $unpaid_count = mysqli_num_rows(mysqli_query($conn, "SELECT * FROM member WHERE 
       alert("發生錯誤，請稍後再試");
     });
   });
+
+
+  document.getElementById('updateForm').addEventListener('submit', function(event) {
+    event.preventDefault(); 
+
+    var formData = new FormData(this);
+
+    fetch('update.pay.php', {
+        method: 'POST',
+        body: formData
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            // 隱藏模態框
+            var modal = bootstrap.Modal.getInstance(editModal);
+            modal.hide();
+            window.location.reload();
+        } else {
+            alert("更新失敗：" + data.message);
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        alert("發生錯誤，請稍後再試");
+    });
+});
+
+
 </script>
 
 <!-- 圖表 -->
