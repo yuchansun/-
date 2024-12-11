@@ -8,6 +8,11 @@
 
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels"></script>
+
+     <!-- 引入 Google 字型 -->
+     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&family=Noto+Sans+TC:wght@400;700&display=swap" rel="stylesheet">
+
+
     <style>
         #feeChart {
             width: 80%;  /* 設定寬度 */
@@ -15,12 +20,22 @@
             height: auto;  /* 高度自動調整 */
             margin-bottom: 20px;
         }
+
+        #nav{
+          background-color:#e2e2e9;
+        }
+
+        .nav-link {
+            color: #284777; /* 修改文字顏色 */
+            font-weight: bold; /* 設定文字為粗體 */
+            font-family: 'Arial', 'Helvetica', sans-serif; /* 使用本地字體 */
+        }
     </style>
 </head>
 
 <body>
 
-<nav class="navbar navbar-expand-sm bg-dark navbar-dark">
+<nav id="nav" class="navbar navbar-expand-sm  navbar-dark">
 
 
   <div class="container-fluid">
@@ -64,3 +79,4 @@
 
 
 </nav>
+<br>
