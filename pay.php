@@ -10,7 +10,7 @@ if (!isset($_SESSION["account"])) {
 
 require_once 'db.php';
 
-hh
+
 $role = $_SESSION['role'] ?? 'U';
 
 // 接收查詢條件
@@ -107,7 +107,7 @@ $unpaid_count = mysqli_num_rows(mysqli_query($conn, "SELECT * FROM member WHERE 
     </thead>
     <tbody>
       <?php while ($row = mysqli_fetch_assoc($result)) { ?>
-        <tr id="row-<?= $row['id'] ?>">
+        <tr id="row-<?= $row['stu_id'] ?>">
           <td><?= htmlspecialchars($row["name"]) ?></td>
           <td><?= htmlspecialchars($row["stu_id"]) ?></td>
           <td><?= htmlspecialchars($row["contact"]) ?></td>
@@ -115,7 +115,7 @@ $unpaid_count = mysqli_num_rows(mysqli_query($conn, "SELECT * FROM member WHERE 
           <td><?= htmlspecialchars($row["payment_status"]) ?></td>
           <td>
             <button class="btn btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#editModal" 
-                    data-id="<?= $row['id'] ?>" 
+                    data-id="<?= $row['stu_id'] ?>" 
                     data-status="<?= $row['payment_status'] ?>"
                     data-admission="<?= $row['admission'] ?>">
               修改
@@ -141,8 +141,8 @@ $unpaid_count = mysqli_num_rows(mysqli_query($conn, "SELECT * FROM member WHERE 
           <div class="form-group">
             <label for="paidStatus">繳費狀態</label>
             <select id="paidStatus" class="form-select" name="payment_status">
-              <option value="1">已繳費</option>
-              <option value="0">未繳費</option>
+              <option value="已繳費">已繳費</option>
+              <option value="未繳費">未繳費</option>
             </select>
           </div>
           <div class="form-group mt-2">
@@ -189,9 +189,10 @@ $unpaid_count = mysqli_num_rows(mysqli_query($conn, "SELECT * FROM member WHERE 
     .then(data => {
       if (data.success) {
         var row = document.getElementById('row-' + formData.get('id'));
-        row.querySelector('.payment-status').innerHTML = (formData.get('payment_status') == 1) ? '已繳費' : '未繳費';
+        // row.querySelector('.payment-status').innerHTML = (formData.get('payment_status') == '已繳費') ? '已繳費' : '未繳費';
         var modal = bootstrap.Modal.getInstance(editModal);
         modal.hide();
+        
       } else {
         alert("更新失敗：" + data.message);
       }
