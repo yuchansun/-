@@ -35,21 +35,8 @@
 
       </li>
 
-      <li class="nav-item">
-
-        <a class="nav-link" href="conference.php">Conference</a>
-
-      </li>
-
-      <li class="nav-item">
-
-        <a class="nav-link" href="fee.php">Fee</a>
-
-      </li>
-      <li class="nav-item">
-
-        <a class="nav-link" href="query.php">Query</a>
-
+      
+      
       </li>
       <li class="nav-item">
 
