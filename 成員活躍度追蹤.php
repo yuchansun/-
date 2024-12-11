@@ -94,11 +94,13 @@ if ($order){
 <!-- 選擇排序欄位 -->
  <br>
  
-<form action="成員活躍度追蹤.php" method="post">
+<form action="成員活躍度追蹤.php" method="post" class="mb-4">
+<div class="row g-3">
+<div class="col-md-3">
 
-  <select name="order" class="form-select" aria-label="選擇排序欄位">
+  <select name="order" class="form-select" aria-label="選擇排序欄位" >
 
-    <option value="" <?=($order=='')?'selected':''?>>選擇排序欄位</option>
+    <option value="" <?=($order=='')?'selected':''?> >選擇排序欄位</option>
 
     <option value="stu_id" <?=($order=="stu_id")?"selected":""?>>學號</option>
 
@@ -111,14 +113,18 @@ if ($order){
 
 
   </select>
-
-  <input placeholder="搜尋姓名及活動" class="form-control" type="text" name="searchtxt" value="<?=$searchtxt?>">
-
-  <div class="row g-3 align-items-center">
-  <br>
   </div>
+  <div class="col-md-3">
+  <input placeholder="搜尋姓名及活動" class="form-control" type="text" name="searchtxt" value="<?=$searchtxt?>">
+  </div>
+  <div class="col-md-3">
   <input class="btn btn-secondary" type="submit" value="搜尋">
-
+  </div>
+  <div class="col-md-3 text-end">
+  <!-- 新增活動按鈕 -->
+<button type="button" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#addActivityModal">新增活動</button>
+</div>
+  </div>
 </form>
 
 
@@ -177,6 +183,8 @@ if ($order){
     <!-- 編輯活動連結 --><!-- <a href="edit_activity.php?stu_id=<?=$row['stu_id']?>" class="btn btn-info">編輯活動</a> -->
   <!-- 編輯活動按鈕，觸發 Modal -->
  <button type="button" class="btn btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#editActivityModal<?=$row['stu_id']?>">編輯活動</button>
+
+ 
 
 
  <!-- 編輯幹部 Modal -->
@@ -255,9 +263,6 @@ if ($order){
  
 
 </div>
-
-<!-- 新增活動按鈕 -->
-<button type="button" class="btn btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#addActivityModal">新增活動</button>
 
 <!-- 新增活動 Modal -->
 <div class="modal fade" id="addActivityModal" tabindex="-1" aria-labelledby="addActivityModalLabel" aria-hidden="true">
