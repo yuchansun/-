@@ -50,11 +50,8 @@
       
       
       </li>
-      <li class="nav-item">
-
-        <a class="nav-link" href="edit_profile.php">edit_profile</a>
-
-      </li>
+      
+     
       <li class="nav-item">
 
         <a class="nav-link" href="pay.php">會費管理</a>
