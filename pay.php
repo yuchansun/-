@@ -44,7 +44,7 @@ if ($start_date && $end_date) {
 } elseif ($end_date) {
     $conditions[] = "admission <= '$end_date'";
 }
-
+//
 $condition_sql = $conditions ? "WHERE " . implode(" AND ", $conditions) : "";
 
 // 排序條件
