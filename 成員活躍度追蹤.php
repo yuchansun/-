@@ -38,6 +38,7 @@ try {
  $start_date = $_POST["start_date"]??"";
  $end_date = $_POST["end_date"]??"";
 
+ $activity_filter = $_POST["activity_filter"] ?? ""; // 如果未設置，默認為空字符串
 
 
 // 基本 SQL 查詢
@@ -86,27 +87,10 @@ if ($end_date){
 if ($order){
   $sql.=" order by $order";
 }
-
-
-// if ($order) {
-//   if ($order === "activity_rate") {
-//       // 活躍度的降冪排序
-//       $sql .= " ORDER BY participated_activities / (SELECT COUNT(*) FROM activities) DESC";
-//   } elseif ($order === "participated_activities") {
-//       // 參與次數的降冪排序
-//       $sql .= " ORDER BY participated_activities DESC";
-//   }
-// }
-
-
-// // 排序條件
-// if ($order) {
-//   if ($order === "activity_rate") {
-//       $order = "participated_activities / total_activities DESC"; // 自定義排序條件
-//   }
-//   $sql .= " ORDER BY $order";
-// }
-
+// 添加活動篩選條件
+if ($activity_filter) {
+  $sql .= " HAVING FIND_IN_SET('$activity_filter', GROUP_CONCAT(a.activity_id)) > 0";
+}
  $result = mysqli_query($conn, $sql);
 
 ?>
@@ -116,11 +100,10 @@ if ($order){
  <br>
  
 <form action="成員活躍度追蹤.php" method="post" class="mb-4">
+  
 <div class="row g-3">
-<div class="col-md-3">
-
+  <div class="col-md-2">
   <select name="order" class="form-select" aria-label="選擇排序欄位" >
-
     <option value="" <?=($order=='')?'selected':''?> >選擇排序欄位</option>
 
     <option value="stu_id" <?=($order=="stu_id")?"selected":""?>>學號</option>
@@ -132,10 +115,29 @@ if ($order){
     <option value="participated_activities" <?=($order == "participated_activities") ? 'selected' : ''?>>活躍度</option>
   </select>
   </div>
+
+  <!-- 選擇活動選單 -->
+  <div class="col-md-2">
+            <label for="activity_filter"></label>
+            <select name="activity_filter" id="activity_filter" class="form-select">
+                <option value="">所有活動</option>
+                <?php
+                $activities_query = "SELECT activity_id, activity_name FROM activities";
+                $activities_result = mysqli_query($conn, $activities_query);
+                while ($activity = mysqli_fetch_assoc($activities_result)) {
+                    $selected = ($activity_filter == $activity['activity_id']) ? 'selected' : '';
+                    echo "<option value=\"{$activity['activity_id']}\" $selected>{$activity['activity_name']}</option>";
+                }
+                ?>
+            </select>
+        </div>
+
+
+
   <div class="col-md-3">
   <input placeholder="搜尋姓名幹部或活動" class="form-control" type="text" name="searchtxt" value="<?=$searchtxt?>">
   </div>
-  <div class="col-md-3">
+  <div class="col-md-2">
   <input class="btn btn-secondary" type="submit" value="搜尋">
   </div>
   <div class="col-md-3 text-end">
