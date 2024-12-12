@@ -164,11 +164,11 @@ $unpaid_count = mysqli_num_rows(mysqli_query($conn, "SELECT * FROM member WHERE 
     <!-- 搜尋按鈕 -->
 
     <button type="submit">搜尋</button><br><br>
+    </form>
   </div>
 
 <br>
 
-<!-- 顯示查詢結果 -->
 <div class="container">
   <table class="table table-bordered table-striped">
     <thead>
@@ -183,21 +183,23 @@ $unpaid_count = mysqli_num_rows(mysqli_query($conn, "SELECT * FROM member WHERE 
     </thead>
     <tbody>
       <?php while ($row = mysqli_fetch_assoc($result)) { ?>
-        <tr id="row-<?= $row['stu_id'] ?>">
+        <tr id="row-<?= htmlspecialchars($row['stu_id']) ?>" 
+            data-payment-status="<?= htmlspecialchars($row['payment_status']) ?>" 
+            data-admission="<?= htmlspecialchars($row['admission']) ?>">
           <td><?= htmlspecialchars($row["name"]) ?></td>
           <td><?= htmlspecialchars($row["stu_id"]) ?></td>
           <td><?= htmlspecialchars($row["contact"]) ?></td>
           <td><?= htmlspecialchars($row["admission"]) ?></td>
           <td><?= htmlspecialchars($row["payment_status"]) ?></td>
           <td>
-            <button class="btn btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#editModal" 
-                    data-id="<?= $row['stu_id'] ?>" 
-                    data-status="<?= $row['payment_status'] ?>"
-                    data-admission="<?= $row['admission'] ?>">
+            <button type="button" 
+                    class="btn btn-outline-secondary edit-btn" 
+                    data-id="<?= htmlspecialchars($row["stu_id"]) ?>" 
+                    data-bs-toggle="modal" 
+                    data-bs-target="#editModal">
               修改
-              
             </button>
-           
+          </td>
         </tr>
       <?php } ?>
     </tbody>
@@ -209,12 +211,13 @@ $unpaid_count = mysqli_num_rows(mysqli_query($conn, "SELECT * FROM member WHERE 
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="editModalLabel">修改繳費狀態</h5>
+        <h5 class="modal-title" id="editModalLabel">修改繳費狀態與日期</h5>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">
-        <form id="updateForm" method="post">
-          <input type="hidden" id="id" name="id">
+        <form id="updateForm" method="post" action="">
+          <p id="modalValue"></p>
+          <input type="hidden" id="studentId" name="stu_id">
           <div class="form-group">
             <label for="paidStatus">繳費狀態</label>
             <select id="paidStatus" class="form-select" name="payment_status">
@@ -229,81 +232,32 @@ $unpaid_count = mysqli_num_rows(mysqli_query($conn, "SELECT * FROM member WHERE 
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">取消</button>
-        <button type="submit" class="btn btn-primary">確認修改</button>
+        <button type="submit" class="btn btn-primary">確認</button>
       </div>
-      </form>
+        </form>
     </div>
   </div>
 </div>
-</form>
+
 <script>
-  var editModal = document.getElementById('editModal');
-  editModal.addEventListener('show.bs.modal', function (event) {
-    var button = event.relatedTarget; 
-    var id = button.getAttribute('data-id');
-    var status = button.getAttribute('data-status');
-    var admission = button.getAttribute('data-admission');
+  document.querySelectorAll('.edit-btn').forEach(button => {
+    button.addEventListener('click', function () {
+        const studentId = this.getAttribute('data-id');
+        const row = document.getElementById(`row-${studentId}`);
+        const paymentStatus = row.getAttribute('data-payment-status');
+        const admissionDate = row.getAttribute('data-admission');
 
-    var modalId = editModal.querySelector('#id');
-    var modalStatus = editModal.querySelector('#paidStatus');
-    var modalAdmission = editModal.querySelector('#admissionDate');
+        // 設定模態框中的值
+        document.getElementById('studentId').value = studentId;
+        document.getElementById('paidStatus').value = paymentStatus;
+        document.getElementById('admissionDate').value = admissionDate;
 
-    modalId.value = id;
-    modalStatus.value = status;
-    modalAdmission.value = admission;
-  });
-
-  document.getElementById('updateForm').addEventListener('submit', function(event) {
-    event.preventDefault(); 
-
-    var formData = new FormData(this);
-
-    fetch('update.pay.php', {
-      method: 'POST',
-      body: formData
-    })
-    .then(response => response.json())
-    .then(data => {
-      if (data.success) {
-        var row = document.getElementById('row-' + formData.get('id'));
-        // row.querySelector('.payment-status').innerHTML = (formData.get('payment_status') == '已繳費') ? '已繳費' : '未繳費';
-        var modal = bootstrap.Modal.getInstance(editModal);
-        modal.hide();
+        // 更新模態框標題或提示
+        const modalValue = document.getElementById('modalValue');
+        modalValue.textContent = `正在修改學生 ID：${studentId}`;
         
-      } else {
-        alert("更新失敗：" + data.message);
-      }
-    })
-    .catch(error => {
-      console.error('Error:', error);
-      alert("發生錯誤，請稍後再試");
-    });
-  });
-
-
-  document.getElementById('updateForm').addEventListener('submit', function(event) {
-    event.preventDefault(); 
-
-    var formData = new FormData(this);
-
-    fetch('update.pay.php', {
-        method: 'POST',
-        body: formData
-    })
-    .then(response => response.json())
-    .then(data => {
-        if (data.success) {
-            // 隱藏模態框
-            var modal = bootstrap.Modal.getInstance(editModal);
-            modal.hide();
-            window.location.reload();
-        } else {
-            alert("更新失敗：" + data.message);
-        }
-    })
-    .catch(error => {
-        console.error('Error:', error);
-        alert("發生錯誤，請稍後再試");
+        // 動態更新表單提交目標 (可選)
+        document.getElementById('updateForm').action = `update.pay.php?id=${studentId}`;
     });
 });
 
@@ -315,137 +269,10 @@ $unpaid_count = mysqli_num_rows(mysqli_query($conn, "SELECT * FROM member WHERE 
 <br>
 <canvas id="feeChart" width="200" height="200" style="max-width: 300px; max-height: 300px;display: block; margin: 0 auto;"></canvas>
 
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-<script>
-  // 從 PHP 端接收會費數據
-  const paid = <?php echo $paid_count; ?>;
-  const unpaid = <?php echo $unpaid_count; ?>;
+<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
 
-  // 設置圓餅圖的資料
-  const data = {
-    labels: ['已繳會費', '未繳會費'],
-    datasets: [{
-      data: [paid, unpaid],
-      backgroundColor: ['#36A2EB', '#FF6384'],
-      hoverBackgroundColor: ['#2196F3', '#FF3D56']
-    }]
-  };
-
-  // 設置圖表選項
-  const options = {
-    responsive: true,
-    plugins: {
-      legend: {
-        position: 'top',
-      },
-      tooltip: {
-        callbacks: {
-          label: function(tooltipItem) {
-            let label = tooltipItem.label || '';
-            if (label) {
-              label += ': ' + tooltipItem.raw + '人';
-            }
-            return label;
-          }
-        }
-      },
-      datalabels: {
-        color: '#fff', // 標籤顏色
-        font: {
-          weight: 'bold',
-          size: 14
-        },
-        formatter: (value, context) => {
-          const total = context.dataset.data.reduce((acc, val) => acc + val, 0);
-          const percentage = ((value / total) * 100).toFixed(1);
-          return value + '人 (' + percentage + '%)';
-        }
-      }
-    }
-  };
-
-  // 渲染圓餅圖
-  const ctx = document.getElementById('feeChart').getContext('2d');
-  new Chart(ctx, {
-    type: 'pie',
-    data: data,
-    options: options
-  });
-</script>
-
-</div>
-
-<script>
-// JavaScript 代碼
-document.addEventListener('DOMContentLoaded', function() {
-
-  // 從 PHP 獲取已繳費和未繳費人數
-  const paid = <?php echo $paid_count; ?>;
-  const unpaid = <?php echo $unpaid_count; ?>;
-
-  // 使用 Chart.js 繪製餅狀圖
-  const ctx = document.getElementById('feeChart').getContext('2d');
-  new Chart(ctx, {
-    type: 'pie',
-    data: {
-      labels: ['已繳會費', '未繳會費'],
-      datasets: [{
-        data: [paid, unpaid],
-        backgroundColor: ['#36A2EB', '#FF6384'],
-        hoverBackgroundColor: ['#2196F3', '#FF3D56']
-      }]
-    },
-    options: {
-      // 圖表選項配置
-    }
-  });
-});
-
-
-// JavaScript 代碼
-document.getElementById('updateForm').addEventListener('submit', function(event) {
-  event.preventDefault(); 
-
-  var formData = new FormData(this);
-
-  fetch('update.pay.php', {
-    method: 'POST',
-    body: formData
-  })
-  .then(response => response.json())
-  .then(data => {
-    if (data.success) {
-      // 更新圖表數據
-      // updateFeeChart(data.paid, data.unpaid);
-    } else {
-      alert("更新失敗：" + data.message);
-    }
-  })
-  .catch(error => {
-    console.error('Error:', error);
-    alert("發生錯誤，請稍後再試");
-  });
-});
-
-function updateFeeChart(paid, unpaid) {
-  // 使用新的數據更新圖表
-  const ctx = document.getElementById('feeChart').getContext('2d');
-  new Chart(ctx, {
-    type: 'pie',
-    data: {
-      labels: ['已繳會費', '未繳會費'],
-      datasets: [{
-        data: [paid, unpaid],
-        backgroundColor: ['#36A2EB', '#FF6384'],
-        hoverBackgroundColor: ['#2196F3', '#FF3D56']
-      }]
-    },
-    options: {
-      // 圖表選項配置
-    }
-  });
-}
-</script>
 
 <?php
 mysqli_free_result($result);
