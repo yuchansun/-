@@ -59,8 +59,8 @@ if (!$result) {
 }
 
 // 計算已繳費和未繳費的會員數
-$paid_count = mysqli_num_rows(mysqli_query($conn, "SELECT * FROM member WHERE payment_status = 已繳費"));
-$unpaid_count = mysqli_num_rows(mysqli_query($conn, "SELECT * FROM member WHERE payment_status = 未繳費"));
+$paid_count = mysqli_num_rows(mysqli_query($conn, "SELECT * FROM member WHERE payment_status = '已繳費'"));
+$unpaid_count = mysqli_num_rows(mysqli_query($conn, "SELECT * FROM member WHERE payment_status = '未繳費'"));
 ?>
 
 
@@ -236,7 +236,9 @@ $unpaid_count = mysqli_num_rows(mysqli_query($conn, "SELECT * FROM member WHERE 
 </script>
 
 <!-- 圖表 -->
-<canvas id="feeChart" width="200" height="200" style="max-width: 300px; max-height: 300px;"></canvas>
+<br>
+<br>
+<canvas id="feeChart" width="200" height="200" style="max-width: 300px; max-height: 300px;display: block; margin: 0 auto;"></canvas>
 
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script>
@@ -338,7 +340,7 @@ document.getElementById('updateForm').addEventListener('submit', function(event)
   .then(data => {
     if (data.success) {
       // 更新圖表數據
-      updateFeeChart(data.paid, data.unpaid);
+      // updateFeeChart(data.paid, data.unpaid);
     } else {
       alert("更新失敗：" + data.message);
     }
