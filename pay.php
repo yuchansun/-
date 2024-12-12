@@ -165,7 +165,7 @@ $unpaid_count = mysqli_num_rows(mysqli_query($conn, "SELECT * FROM member WHERE 
 
     <button type="submit">搜尋</button><br><br>
   </div>
-</form>
+
 <br>
 
 <!-- 顯示查詢結果 -->
@@ -195,6 +195,7 @@ $unpaid_count = mysqli_num_rows(mysqli_query($conn, "SELECT * FROM member WHERE 
                     data-status="<?= $row['payment_status'] ?>"
                     data-admission="<?= $row['admission'] ?>">
               修改
+              
             </button>
            
         </tr>
@@ -234,7 +235,7 @@ $unpaid_count = mysqli_num_rows(mysqli_query($conn, "SELECT * FROM member WHERE 
     </div>
   </div>
 </div>
-
+</form>
 <script>
   var editModal = document.getElementById('editModal');
   editModal.addEventListener('show.bs.modal', function (event) {
@@ -377,6 +378,7 @@ $unpaid_count = mysqli_num_rows(mysqli_query($conn, "SELECT * FROM member WHERE 
 <script>
 // JavaScript 代碼
 document.addEventListener('DOMContentLoaded', function() {
+
   // 從 PHP 獲取已繳費和未繳費人數
   const paid = <?php echo $paid_count; ?>;
   const unpaid = <?php echo $unpaid_count; ?>;
