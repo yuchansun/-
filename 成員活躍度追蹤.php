@@ -60,9 +60,9 @@ $sql = "SELECT
  m.stu_id, m.name";
 
 
-if ($searchtxt) {
-    $sql .= " HAVING m.name LIKE '%$searchtxt%' OR activities LIKE '%$searchtxt%'";
-}
+$sql .= " HAVING m.name LIKE '%$searchtxt%' 
+          OR activities LIKE '%$searchtxt%' 
+          OR positions LIKE '%$searchtxt%' ";
 
 if ($start_date){
   if ($condition){$condition.=" and pdate >= '$start_date'";}
