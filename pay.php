@@ -126,9 +126,12 @@ $unpaid_count = mysqli_num_rows(mysqli_query($conn, "SELECT * FROM member WHERE 
 
 <!-- 查詢表單 -->
 <br>
-<form action="pay.php" method="post" class="mb-4">
+<div class="container">
+<form action="pay.php" method="post" class="mb-4 ">
   <div class="search-container">
     <!-- 下拉選單 -->
+    <div class="row g-3">
+    <div class="col-md-4">
     <select name="order">
       <option value="" <?= ($order == '') ? 'selected' : '' ?>>選擇排序欄位</option>
       <option value="name" <?= ($order == "name") ? "selected" : "" ?>>姓名</option>
@@ -137,21 +140,30 @@ $unpaid_count = mysqli_num_rows(mysqli_query($conn, "SELECT * FROM member WHERE 
       <option value="admission" <?= ($order == "admission") ? "selected" : "" ?>>繳費日期</option>
       <option value="payment_status" <?= ($order == "payment_status") ? "selected" : "" ?>>繳費狀態</option>
     </select>
-
+    </div>
     <!-- 搜尋文字輸入框 -->
+    <div class="col-md-1"></div>
+  <div class="col-md-7">
+  
     <input type="text" placeholder="搜尋名稱或學號" name="searchtxt" value="<?= htmlspecialchars($searchtxt) ?>">
-
+  </div>
+  </div>
     <!-- 日期範圍 -->
     <div class="row g-3">
-    <div class="col-md-4">
-    <label for="start_date" class="visually-hidden">開始日期</label>
+    <div class="col-md-6">
+    
+   
+
+
+    <label for="start_date" >開始日期</label>
     <input id="start_date" type="date" name="start_date" value="<?= $start_date ?>">
 
-    <label for="end_date" class="visually-hidden">結束日期</label>
+    <label for="end_date" >結束日期</label>
     <input id="end_date" type="date" name="end_date" value="<?= $end_date ?>">
 
     <!-- 搜尋按鈕 -->
-    <button type="submit">搜尋</button>
+
+    <button type="submit">搜尋</button><br><br>
   </div>
 </form>
 <br>
