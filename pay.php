@@ -63,36 +63,98 @@ $paid_count = mysqli_num_rows(mysqli_query($conn, "SELECT * FROM member WHERE pa
 $unpaid_count = mysqli_num_rows(mysqli_query($conn, "SELECT * FROM member WHERE payment_status = '未繳費'"));
 ?>
 
+<style>
+  .search-container {
+    display: flex;
+    align-items: center; /* 垂直置中 */
+    gap: 15px; /* 控制元素間的距離 */
+    flex-wrap: wrap; /* 讓內容在較小螢幕時自動換行 */
+  }
 
+  .search-container select,
+  .search-container input,
+  .search-container button {
+    height: 40px; /* 統一高度 */
+    padding: 5px 10px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 5px; /* 圓角效果 */
+  }
+
+  .search-container select {
+    width: 150px;
+  }
+
+  .search-container input[type="text"] {
+    flex: 1; /* 讓文字搜尋框自動延展 */
+  }
+
+  .search-container input[type="date"] {
+    width: 150px; /* 日期框固定寬度 */
+  }
+
+  .search-container button {
+    width: 100px; /* 按鈕固定寬度 */
+    background-color: #6c757d;
+    color: white;
+    border: none;
+    cursor: pointer;
+  }
+
+  .search-container button:hover {
+    background-color: #5a6268;
+  }
+
+ 
+  .search-container button {
+    width: 55px; /* 調小按鈕寬度 */
+    height: 40px; /* 調小按鈕高度 */
+    font-size: 14px; /* 調小字體大小 */
+    background-color: #6c757d;
+    color: white;
+    border: none;
+    border-radius: 5px; /* 圓角 */
+    cursor: pointer;
+  }
+
+  .search-container button:hover {
+    background-color: #5a6268;
+  }
+</style>
+ 
+</style>
 
 <!-- 查詢表單 -->
-<form action="pay.php" method="post">
-  <select name="order" class="form-select">
-    <option value="" <?= ($order == '') ? 'selected' : '' ?>>選擇排序欄位</option>
-    <option value="name" <?= ($order == "name") ? "selected" : "" ?>>姓名</option>
-    <option value="stu_id" <?= ($order == "stu_id") ? "selected" : "" ?>>學號</option>
-    <option value="contact" <?= ($order == "contact") ? "selected" : "" ?>>電話</option>
-    <option value="admission" <?= ($order == "admission") ? "selected" : "" ?>>繳費日期</option>
-    <option value="payment_status" <?= ($order == "payment_status") ? "selected" : "" ?>>繳費狀態</option>
-  </select>
-  <input placeholder="搜尋名稱或學號" class="form-control" type="text" name="searchtxt" value="<?= htmlspecialchars($searchtxt) ?>">
-  <div class="row g-3 align-items-center">
-    <div class="col-auto">
-      <label for="start_date" class="col-form-label">開始日期</label>
-    </div>
-    <div class="col-auto">
-      <input id="start_date" class="form-control" type="date" name="start_date" value="<?= $start_date ?>">
-    </div>
-    <div class="col-auto">
-      <label for="end_date" class="col-form-label">結束日期</label>
-    </div>
-    <div class="col-auto">
-      <input id="end_date" class="form-control" type="date" name="end_date" value="<?= $end_date ?>">
-    </div>
+<br>
+<form action="pay.php" method="post" class="mb-4">
+  <div class="search-container">
+    <!-- 下拉選單 -->
+    <select name="order">
+      <option value="" <?= ($order == '') ? 'selected' : '' ?>>選擇排序欄位</option>
+      <option value="name" <?= ($order == "name") ? "selected" : "" ?>>姓名</option>
+      <option value="stu_id" <?= ($order == "stu_id") ? "selected" : "" ?>>學號</option>
+      <option value="contact" <?= ($order == "contact") ? "selected" : "" ?>>電話</option>
+      <option value="admission" <?= ($order == "admission") ? "selected" : "" ?>>繳費日期</option>
+      <option value="payment_status" <?= ($order == "payment_status") ? "selected" : "" ?>>繳費狀態</option>
+    </select>
+
+    <!-- 搜尋文字輸入框 -->
+    <input type="text" placeholder="搜尋名稱或學號" name="searchtxt" value="<?= htmlspecialchars($searchtxt) ?>">
+
+    <!-- 日期範圍 -->
+    <div class="row g-3">
+    <div class="col-md-4">
+    <label for="start_date" class="visually-hidden">開始日期</label>
+    <input id="start_date" type="date" name="start_date" value="<?= $start_date ?>">
+
+    <label for="end_date" class="visually-hidden">結束日期</label>
+    <input id="end_date" type="date" name="end_date" value="<?= $end_date ?>">
+
+    <!-- 搜尋按鈕 -->
+    <button type="submit">搜尋</button>
   </div>
-  
-  <input class="btn btn-secondary" type="submit" value="搜尋">
 </form>
+<br>
 
 <!-- 顯示查詢結果 -->
 <div class="container">
