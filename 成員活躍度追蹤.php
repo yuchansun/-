@@ -86,6 +86,27 @@ if ($end_date){
 if ($order){
   $sql.=" order by $order";
 }
+
+
+// if ($order) {
+//   if ($order === "activity_rate") {
+//       // 活躍度的降冪排序
+//       $sql .= " ORDER BY participated_activities / (SELECT COUNT(*) FROM activities) DESC";
+//   } elseif ($order === "participated_activities") {
+//       // 參與次數的降冪排序
+//       $sql .= " ORDER BY participated_activities DESC";
+//   }
+// }
+
+
+// // 排序條件
+// if ($order) {
+//   if ($order === "activity_rate") {
+//       $order = "participated_activities / total_activities DESC"; // 自定義排序條件
+//   }
+//   $sql .= " ORDER BY $order";
+// }
+
  $result = mysqli_query($conn, $sql);
 
 ?>
@@ -106,23 +127,20 @@ if ($order){
 
     <option value="name" <?=($order=="name")?"selected":""?>>姓名</option>
 
-    <option value="positions" <?=($order=="positions")?"selected":""?>>擔任幹部</option>
+    <option value="participated_activities" <?=($order == "participated_activities") ? 'selected' : ''?>>參與次數</option>
 
-    <option value="activities" <?=($order=="activities")?"selected":""?>>活動</option>
-
-
-
+    <option value="participated_activities" <?=($order == "participated_activities") ? 'selected' : ''?>>活躍度</option>
   </select>
   </div>
   <div class="col-md-3">
-  <input placeholder="搜尋姓名及活動" class="form-control" type="text" name="searchtxt" value="<?=$searchtxt?>">
+  <input placeholder="搜尋姓名幹部或活動" class="form-control" type="text" name="searchtxt" value="<?=$searchtxt?>">
   </div>
   <div class="col-md-3">
   <input class="btn btn-secondary" type="submit" value="搜尋">
   </div>
   <div class="col-md-3 text-end">
   <!-- 新增活動按鈕 -->
-<button type="button" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#addActivityModal">新增活動</button>
+<button type="button" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#addActivityModal">新增一項活動</button>
 </div>
   </div>
 </form>
