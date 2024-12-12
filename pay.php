@@ -10,8 +10,8 @@ if (!isset($_SESSION["account"])) {
 
 require_once 'db.php';
 
-hh
-$role = $_SESSION['role'] ?? 'U';
+
+
 
 // 接收查詢條件
 $start_date = $_POST["start_date"] ?? "";
@@ -44,7 +44,7 @@ if ($start_date && $end_date) {
 } elseif ($end_date) {
     $conditions[] = "admission <= '$end_date'";
 }
-
+//
 $condition_sql = $conditions ? "WHERE " . implode(" AND ", $conditions) : "";
 
 // 排序條件
@@ -59,9 +59,11 @@ if (!$result) {
 }
 
 // 計算已繳費和未繳費的會員數
-$paid_count = mysqli_num_rows(mysqli_query($conn, "SELECT * FROM member WHERE payment_status = 1"));
-$unpaid_count = mysqli_num_rows(mysqli_query($conn, "SELECT * FROM member WHERE payment_status = 0"));
+$paid_count = mysqli_num_rows(mysqli_query($conn, "SELECT * FROM member WHERE payment_status = 已繳費"));
+$unpaid_count = mysqli_num_rows(mysqli_query($conn, "SELECT * FROM member WHERE payment_status = 未繳費"));
 ?>
+
+
 
 <!-- 查詢表單 -->
 <form action="pay.php" method="post">
@@ -107,7 +109,7 @@ $unpaid_count = mysqli_num_rows(mysqli_query($conn, "SELECT * FROM member WHERE 
     </thead>
     <tbody>
       <?php while ($row = mysqli_fetch_assoc($result)) { ?>
-        <tr id="row-<?= $row['id'] ?>">
+        <tr id="row-<?= $row['stu_id'] ?>">
           <td><?= htmlspecialchars($row["name"]) ?></td>
           <td><?= htmlspecialchars($row["stu_id"]) ?></td>
           <td><?= htmlspecialchars($row["contact"]) ?></td>
@@ -115,7 +117,7 @@ $unpaid_count = mysqli_num_rows(mysqli_query($conn, "SELECT * FROM member WHERE 
           <td><?= htmlspecialchars($row["payment_status"]) ?></td>
           <td>
             <button class="btn btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#editModal" 
-                    data-id="<?= $row['id'] ?>" 
+                    data-id="<?= $row['stu_id'] ?>" 
                     data-status="<?= $row['payment_status'] ?>"
                     data-admission="<?= $row['admission'] ?>">
               修改
@@ -141,8 +143,8 @@ $unpaid_count = mysqli_num_rows(mysqli_query($conn, "SELECT * FROM member WHERE 
           <div class="form-group">
             <label for="paidStatus">繳費狀態</label>
             <select id="paidStatus" class="form-select" name="payment_status">
-              <option value="1">已繳費</option>
-              <option value="0">未繳費</option>
+              <option value="已繳費">已繳費</option>
+              <option value="未繳費">未繳費</option>
             </select>
           </div>
           <div class="form-group mt-2">
@@ -189,9 +191,10 @@ $unpaid_count = mysqli_num_rows(mysqli_query($conn, "SELECT * FROM member WHERE 
     .then(data => {
       if (data.success) {
         var row = document.getElementById('row-' + formData.get('id'));
-        row.querySelector('.payment-status').innerHTML = (formData.get('payment_status') == 1) ? '已繳費' : '未繳費';
+        // row.querySelector('.payment-status').innerHTML = (formData.get('payment_status') == '已繳費') ? '已繳費' : '未繳費';
         var modal = bootstrap.Modal.getInstance(editModal);
         modal.hide();
+        
       } else {
         alert("更新失敗：" + data.message);
       }
@@ -201,6 +204,35 @@ $unpaid_count = mysqli_num_rows(mysqli_query($conn, "SELECT * FROM member WHERE 
       alert("發生錯誤，請稍後再試");
     });
   });
+
+
+  document.getElementById('updateForm').addEventListener('submit', function(event) {
+    event.preventDefault(); 
+
+    var formData = new FormData(this);
+
+    fetch('update.pay.php', {
+        method: 'POST',
+        body: formData
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            // 隱藏模態框
+            var modal = bootstrap.Modal.getInstance(editModal);
+            modal.hide();
+            window.location.reload();
+        } else {
+            alert("更新失敗：" + data.message);
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        alert("發生錯誤，請稍後再試");
+    });
+});
+
+
 </script>
 
 <!-- 圖表 -->
@@ -265,6 +297,77 @@ $unpaid_count = mysqli_num_rows(mysqli_query($conn, "SELECT * FROM member WHERE 
 </script>
 
 </div>
+
+<script>
+// JavaScript 代碼
+document.addEventListener('DOMContentLoaded', function() {
+  // 從 PHP 獲取已繳費和未繳費人數
+  const paid = <?php echo $paid_count; ?>;
+  const unpaid = <?php echo $unpaid_count; ?>;
+
+  // 使用 Chart.js 繪製餅狀圖
+  const ctx = document.getElementById('feeChart').getContext('2d');
+  new Chart(ctx, {
+    type: 'pie',
+    data: {
+      labels: ['已繳會費', '未繳會費'],
+      datasets: [{
+        data: [paid, unpaid],
+        backgroundColor: ['#36A2EB', '#FF6384'],
+        hoverBackgroundColor: ['#2196F3', '#FF3D56']
+      }]
+    },
+    options: {
+      // 圖表選項配置
+    }
+  });
+});
+
+
+// JavaScript 代碼
+document.getElementById('updateForm').addEventListener('submit', function(event) {
+  event.preventDefault(); 
+
+  var formData = new FormData(this);
+
+  fetch('update.pay.php', {
+    method: 'POST',
+    body: formData
+  })
+  .then(response => response.json())
+  .then(data => {
+    if (data.success) {
+      // 更新圖表數據
+      updateFeeChart(data.paid, data.unpaid);
+    } else {
+      alert("更新失敗：" + data.message);
+    }
+  })
+  .catch(error => {
+    console.error('Error:', error);
+    alert("發生錯誤，請稍後再試");
+  });
+});
+
+function updateFeeChart(paid, unpaid) {
+  // 使用新的數據更新圖表
+  const ctx = document.getElementById('feeChart').getContext('2d');
+  new Chart(ctx, {
+    type: 'pie',
+    data: {
+      labels: ['已繳會費', '未繳會費'],
+      datasets: [{
+        data: [paid, unpaid],
+        backgroundColor: ['#36A2EB', '#FF6384'],
+        hoverBackgroundColor: ['#2196F3', '#FF3D56']
+      }]
+    },
+    options: {
+      // 圖表選項配置
+    }
+  });
+}
+</script>
 
 <?php
 mysqli_free_result($result);
