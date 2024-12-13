@@ -61,6 +61,9 @@
                     <a class="nav-link" href="成員活躍度追蹤.php">成員活躍度追蹤</a>
                 </li>
                 <li class="nav-item">
+                    <a class="nav-link" href="活動資料.php">活動資料</a>
+                </li>
+                <li class="nav-item">
                     <a class="nav-link" href="logout.php">登出</a>
                 </li>
             </ul>
