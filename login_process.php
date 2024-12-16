@@ -28,7 +28,7 @@ try {
       $_SESSION["account"]=$account;
       $_SESSION["role"] = $row['role']; 
 
-      header("Location: pay.php");   
+      header("Location: index.php");   
 
 
     }
