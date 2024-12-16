@@ -106,7 +106,7 @@ session_start();
             background-color: #415f91;
         }
         .legend-unpaid {
-            background-color: #565f71;
+            background-color: #d6e3ff;
         }
         .donut-card {
             display: flex;
@@ -358,7 +358,7 @@ session_start();
                     }
                 },
                 labels: ['已繳費', '未繳費'],
-                colors: ['#415f91', '#565f71'],
+                colors: ['#415f91', '#d6e3ff'],
                 legend: {
                     show: false
                 },
