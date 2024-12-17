@@ -18,7 +18,7 @@
         }
         button {
             padding: 8px 16px;
-            background-color: #4CAF50;
+            background-color: #6C757D;
             color: white;
             border: none;
             cursor: pointer;
@@ -33,6 +33,11 @@
             background-color: #f9f9f9;
             border: 1px solid #ddd;
         }
+        .btn.btn-secondary{
+            background-color: #6C757D;
+  
+        }
+        
     </style>
 </head>
 <body>
@@ -47,7 +52,7 @@ if (!isset($_SESSION["account"])){
 require_once 'db.php';
 
 // 取得所有活動資料，包括地點和描述
-$sql = "SELECT activity_id, activity_name, activity_date, activity_location FROM activities";
+$sql = "SELECT activity_id, activity_name, activity_date, activity_location,activity_pic FROM activities";
 $result = $conn->query($sql);
 
 // 存放所有活動資料
@@ -63,6 +68,7 @@ $conn->close();
 ?>
 
 <br><br>
+  
 
 <div class="container">
   <table class="table table-bordered table-striped">
@@ -80,13 +86,13 @@ $conn->close();
             <td><?php echo htmlspecialchars($event['activity_name']); ?></td>
             <td><?php echo htmlspecialchars($event['activity_date']); ?></td>
             <td>
-                <button class="btn btn-primary" type="button" data-bs-toggle="collapse" data-bs-target="#collapse-<?php echo $event['activity_id']; ?>" aria-expanded="false" aria-controls="collapse-<?php echo $event['activity_id']; ?>">
+                <button class="btn btn-secondary" type="button" data-bs-toggle="collapse" data-bs-target="#collapse-<?php echo $event['activity_id']; ?>" aria-expanded="false" aria-controls="collapse-<?php echo $event['activity_id']; ?>">
                     詳細資訊
                 </button>
             </td>
             <td>
                 <!-- 修改按鈕，觸發 modal -->
-                <button class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#editModal-<?php echo $event['activity_id']; ?>">
+                <button class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#editModal-<?php echo $event['activity_id']; ?>">
                     修改日期
                 </button>
             </td>
@@ -98,7 +104,18 @@ $conn->close();
                 <p><strong>地點:</strong> <?php echo htmlspecialchars($event['activity_location']); ?></p>
                 <p><strong>更多資訊:</strong> <a href="https://www.instagram.com/fjuim/p/C_OGO8kyu2L/?img_index=1">點此查看詳細頁面</a></p>
                 <p><strong>活動圖片:</strong></p>
-                <img src="https://via.placeholder.com/150" alt="活動圖片" class="img-fluid">
+
+                <?php
+                    // 如果活動圖片為 BLOB，將其轉換為 Base64 編碼
+                    if (!empty($event['activity_pic'])) {
+                        $image_data = $event['activity_pic']; // 這是從資料庫中讀取的 BLOB 資料
+                        $base64_image = base64_encode($image_data); // 將 BLOB 轉換為 Base64
+                        // 假設圖片是 PNG 格式（根據需要調整為 JPEG 或其他格式）
+                        echo '<img src="data:image/jpg;base64,' . $base64_image . '" alt="活動圖片" class="img-fluid">';
+                    } else {
+                        echo '<p>沒有活動圖片。</p>';
+                    }
+                ?>
             </td>
         </tr>
 
@@ -129,6 +146,7 @@ $conn->close();
     </tbody>
   </table>
 </div>
+
 
 <!-- 引入 jQuery 和 Bootstrap JavaScript -->
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
