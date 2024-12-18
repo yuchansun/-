@@ -6,26 +6,43 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels"></script>
-
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@100..900&family=Noto+Serif+TC&display=swap" rel="stylesheet">
     <!-- 引入 Google 字型 -->
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&family=Noto+Sans+TC:wght@400;700&display=swap" rel="stylesheet">
-
+<link rel="icon" href="https://upload.wikimedia.org/wikipedia/zh/thumb/d/da/Fu_Jen_Catholic_University_logo.svg/800px-Fu_Jen_Catholic_University_logo.svg.png">
     <style>
+        body {
+            font-family: 'Noto Sans TC', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-weight: 100;
+        }
+
+        h3 {
+            font-weight: 600!important;
+        }
         #feeChart {
-            width: 80%;  /* 設定寬度 */
-            max-width: 800px;  /* 最大寬度 */
-            height: auto;  /* 高度自動調整 */
+            width: 80%;
+            /* 設定寬度 */
+            max-width: 800px;
+            /* 最大寬度 */
+            height: auto;
+            /* 高度自動調整 */
             margin-bottom: 20px;
         }
 
         #nav {
-            background-color: #e2e2e9; /* 修改背景顏色 */
+            background-color: #e2e2e9;
+            /* 修改背景顏色 */
         }
 
         .nav-link {
-            color: #284777; /* 修改文字顏色 */
-            font-weight: bold; /* 設定文字為粗體 */
-            font-family: 'Arial', 'Helvetica', sans-serif; /* 使用本地字體 */
+            color: #284777;
+            /* 修改文字顏色 */
+            font-weight: bold;
+            /* 設定文字為粗體 */
+            font-family: 'Arial', 'Helvetica', sans-serif;
+            /* 使用本地字體 */
         }
 
         /* 設定圖片大小 */
@@ -34,10 +51,13 @@
             height: 30px;
             margin-right: 10px;
         }
-         /* 修改“我的網站”文字顏色 */
-         .navbar-brand {
-            color: #284777; /* 這裡設定文字顏色為紅色，您可以更改為任何顏色 */
-            font-weight: bold; /* 設定文字為粗體 */
+
+        /* 修改“我的網站”文字顏色 */
+        .navbar-brand {
+            color: #284777;
+            /* 這裡設定文字顏色為紅色，您可以更改為任何顏色 */
+            font-weight: bold;
+            /* 設定文字為粗體 */
         }
     </style>
 </head>
@@ -54,7 +74,7 @@
 
             <!-- 導覽列的其他項目右對齊 -->
             <ul class="navbar-nav ms-auto">
-            <li class="nav-item">
+                <li class="nav-item">
                     <a class="nav-link" href="index.php">首頁</a>
                 </li>
                 <li class="nav-item">
