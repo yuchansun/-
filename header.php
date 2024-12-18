@@ -54,6 +54,9 @@
 
             <!-- 導覽列的其他項目右對齊 -->
             <ul class="navbar-nav ms-auto">
+            <li class="nav-item">
+                    <a class="nav-link" href="index.php">首頁</a>
+                </li>
                 <li class="nav-item">
                     <a class="nav-link" href="pay.php">會費管理</a>
                 </li>

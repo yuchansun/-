@@ -143,7 +143,7 @@
                             $total_activities = $row['total_activities'];
                             $activity_rate = $total_activities > 0 ? ($participated_activities / $total_activities) * 100 : 0;
                             ?>
-                            <?=$activity_rate?>%
+                            <?=number_format($activity_rate, 2)?>%
                         </td>
                         <td>
                             <button type="button" class="btn btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#editPositionModal<?=$row['stu_id']?>">編輯幹部</button>
