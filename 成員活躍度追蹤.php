@@ -143,6 +143,7 @@ try {
                                 <div class="modal-body">
                                     <form action="update_position.php" method="POST">
                                         <input type="hidden" name="stu_id" value="<?= $row['stu_id'] ?>">
+                                        <p>正在修改學生 ID : <?= $row['stu_id'] ?></p>
                                         <label for="positions">幹部職位</label>
                                         <input type="text" name="positions" class="form-control" value="<?= $row['positions'] ?>">
                                         <button type="submit" class="btn btn-primary mt-3">更新幹部職位</button>
@@ -163,6 +164,8 @@ try {
                                 <div class="modal-body">
                                     <form method="POST" action="edit_activity.php">
                                         <input type="hidden" name="stu_id" value="<?= $row['stu_id'] ?>">
+                                        <p>正在修改學生 ID : <?= $row['stu_id'] ?></p>
+
                                         <h6>選擇參加的活動</h6>
                                         <?php
                                         $activities_result = mysqli_query($conn, "SELECT * FROM activities");

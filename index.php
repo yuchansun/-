@@ -290,7 +290,7 @@ session_start();
                     <div class="col-12">
                         <div class="card">
                             <div class="card-header bg-primary bg-upcoming text-white">
-                                <h4>sch</h4>
+                                <h4>行事曆</h4>
                             </div>
 
                             <div class="col">
